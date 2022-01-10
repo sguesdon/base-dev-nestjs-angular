@@ -1,0 +1,96 @@
+<mat-menu #entrepriseMenu="matMenu">
+  <ng-template matMenuContent let-entrepriseId="entrepriseId">
+    <button mat-menu-item routerLink="./entreprise/{{entrepriseId}}/edit">
+      <mat-icon>edit</mat-icon>
+      <span>Editer</span>
+    </button>
+    <button mat-menu-item routerLink="./entreprise/{{entrepriseId}}/delete">
+      <mat-icon>delete</mat-icon>
+      <span>Supprimer</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #missionMenu="matMenu">
+  <ng-template matMenuContent let-entrepriseId="entrepriseId" let-missionId="missionId">
+    <button mat-menu-item routerLink="./entreprise/{{entrepriseId}}/missions/{{missionId}}/edit">
+      <mat-icon>edit</mat-icon>
+      <span>Editer</span>
+    </button>
+    <button mat-menu-item routerLink="./entreprise/{{entrepriseId}}/missions/{{missionId}}/delete">
+      <mat-icon>delete</mat-icon>
+      <span>Supprimer</span>
+    </button>
+  </ng-template>
+</mat-menu>
+
+
+<mat-card class="entreprise-card" *ngFor="let entreprise of entreprises">
+  <mat-card-header>
+    <mat-card-title>
+      {{entreprise.nom}}
+    </mat-card-title>
+  </mat-card-header>
+  <div class="flex-container" *ngFor="let mission of entreprise.missions">
+    <div class="col col-x2">
+      <mat-card class="mission-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{mission.libelle}}
+          </mat-card-title>
+          <mat-card-subtitle>
+            <span *ngIf="mission.dateFin">
+              {{mission.dateDebut|date:'MM/yyyy'}} <mat-icon>play_arrow</mat-icon> {{mission.dateFin|date:'MM/yyyy'}}
+            </span>
+            <span *ngIf="!mission.dateFin">
+              depuis le {{mission.dateDebut|date:'MM/yyyy'}}
+            </span>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="mission description">
+            {{mission.description}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="missionMenu"
+            [matMenuTriggerData]="{entrepriseId: entreprise._id, missionId: mission._id}"
+            aria-label="menu mission">
+              <mat-icon>more_vert</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <div class="flex-container add">
+        <button mat-raised-button routerLink="./entreprise/{{entreprise._id}}/missions/add" class="col">Nouvelle mission</button>
+      </div>
+    </div>
+    <div class="col map">
+      <google-map
+        height="400px"
+        width="100%"
+        [center]="{lat: 40, lng: -20}"
+        [zoom]="4"
+      >
+        <map-marker
+            [position]="{lat: 40, lng: -20}"
+            [options]="{draggable: false}">
+        </map-marker>
+      </google-map>
+    </div>
+  </div>
+  <mat-card-actions align="end">
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="entrepriseMenu"
+      [matMenuTriggerData]="{entrepriseId: entreprise._id}"
+      aria-label="menu entreprise" >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<div class="flex-container add">
+  <button mat-raised-button routerLink="./entreprise/add" class="col">Nouveau job</button>
+</div>

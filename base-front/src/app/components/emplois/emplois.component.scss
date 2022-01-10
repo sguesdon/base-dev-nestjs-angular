@@ -1,0 +1,17 @@
+div.add {
+  padding-top: 5px;
+}
+
+mat-card.entreprise-card {
+  margin-bottom: 5px;
+}
+
+mat-card.entreprise-card:last-of-type {
+  margin-bottom: 0px;
+}
+
+@media(max-width: 767px){
+  div.map {
+    order:-1
+  }
+}
